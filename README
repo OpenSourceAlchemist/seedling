@@ -1,0 +1,28 @@
+==Seedling
+----------
+
+Seedling is a tool for creating ruby projects.  It aims to add
+tasks (via a Rakefile and some tasks/*.rake) which allow for quick
+and easy publishing of your new ruby library, via github and or rubyforge.
+It automates some of the monotony such as
+ 
+* Re-Versioning
+* AUTHORS updating
+* .gemspec updates
+* building a gem, tarball, zip, source export tree
+* Test (spec) running, via a bacon task and bacon spec helper (we love bacon)
+* Documentation via yard
+* CHANGELOG updating
+
+== Download
+
+using git
+ git clone git://rubyists.com/gits/seedling
+
+==Usage
+-------
+
+We're getting there. Will be
+ seedling plant /path/to/tree
+
+Copyright(c) 2009 The Rubyists
