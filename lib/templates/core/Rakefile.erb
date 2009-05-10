@@ -11,11 +11,11 @@ PROJECT_SPECS = FileList[
   'spec/**/*.rb'
 ]
 
-PROJECT_MODULE = 'Name Parse'
+PROJECT_MODULE = '<%= lib_name -%>'
 PROJECT_README = 'README'
 #PROJECT_RUBYFORGE_GROUP_ID = 3034
 PROJECT_COPYRIGHT = [
-  "#          Copyright (c) #{Time.now.year} The Rubyists rubyists@rubyists.com",
+"#          Copyright (c) #{Time.now.year} <%= @authors[:primary_name] -%> <%= @authors[:primary_email] -%>",
   "# Distributed under the terms of the MIT license."
 ]
 
@@ -24,12 +24,12 @@ PROJECT_COPYRIGHT = [
 IGNORE_FILES = [/\.gitignore/]
 
 GEMSPEC = Gem::Specification.new{|s|
-  s.name         = 'name_parse'
-  s.author       = "TJ Vanderpoel"
-  s.summary      = "Parse name strings into their constituent parts"
-  s.description  = s.summary
-  s.email        = 'bougy.man@gmail.com'
-  s.homepage     = 'http://github.com/bougyman/name_parse'
+  s.name         = '<%= lib_name_u -%>'
+  s.author       = "<%= @authors[:primary_name] -%>"
+  s.summary      = "<%= @project[:summary] -%>"
+  s.description  = "<%= @project[:description] || @project[:summary] -%>"
+  s.email        = '<%= @authors[:primary_email] -%>'
+  s.homepage     = '<%= @project[:url] -%>'
   s.platform     = Gem::Platform::RUBY
   s.version      = (ENV['PROJECT_VERSION'] || (begin;Object.const_get(PROJECT_MODULE)::VERSION;rescue;Date.today.strftime("%Y.%m.%d");end))
   s.files        = `git ls-files`.split("\n").sort.reject { |f| IGNORE_FILES.detect { |exp| f.match(exp)  } }
@@ -37,14 +37,12 @@ GEMSPEC = Gem::Specification.new{|s|
   s.require_path = 'lib'
   s.bindir = "bin"
   s.executables = ["name_parse"]
-  s.rubyforge_project = "pastr"
+  s.rubyforge_project = "<%= @project[:rubyforge_project] -%>"
 
   s.post_install_message = <<MESSAGE.strip
 ============================================================
 
-Thank you for installing Name Parse!
-Verify your install with
-# name-parse "Dr. Phil Seuss, Jr."
+Thank you for installing <%= lib_name -%>!
 
 ============================================================
 MESSAGE
