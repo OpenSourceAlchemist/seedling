@@ -11,7 +11,7 @@ module Seedling
         args ||= ARGV
         raise "arguments must be an array!" unless args.respond_to?(:detect)
         @ourargs = args.dup
-        @command = args.detect { |arg| arg.match(/^(?:--?)?(?:start|stop|restart|create|h(?:elp)?|v(?:ersion)?|console|status)/) }
+        @command = args.detect { |arg| arg.match(/^(?:--?)?(?:plant|create|h(?:elp)?|v(?:ersion)?|console)/) }
         if command.nil?
           @command = ""
         else
@@ -24,7 +24,7 @@ module Seedling
       def self.run(args = nil)
         cmd = new(args)
         case cmd.command
-        when /^(?:--?)?create$/
+        when /^(?:--?)?(?:plant|create)$/
           cmd.create(cmd.command)
         when /^(?:--?)?console$/
           require "irb"
