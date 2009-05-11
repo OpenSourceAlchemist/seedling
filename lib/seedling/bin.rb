@@ -67,21 +67,17 @@ module Seedling
       def usage # {{{
         txt = [
           "\n  Usage:", 
-          "autumn <start|stop|restart|status|create|console> PROJECT [options]\n",
+          "seedling <plant|create|console> PROJECT [options]\n",
           "Commands:\n",
-          " start   - Starts an instance of this application.\n",
-          " stop    - Stops a running instance of this application.\n",
-          " restart - Stops running instance of this application, then starts it back up.  Pidfile",
-          "           (if supplied) is used for both stop and start.\n",
-          " status  - Gives status of a running autumn instance\n",
-          " create  - Creates a new prototype Autumn application in a directory named PROJECT in",
-          "           the current directory.  autumn create foo would make ./foo containing an",
-          "           application prototype.\n",
-          " console - Starts an irb console with autumn (and irb completion) loaded.",
+          " plant   - Creates a new prototype Seedling application in a directory named PROJECT in",
+          "           the current directory.  seedling create foo would make ./foo containing a",
+          "           seedling prototype.\n",
+          " create  - Synonymous with plant.\n",
+          " console - Starts an irb console with seedling (and irb completion) loaded.",
           "           ARGV is passed on to IRB.\n\n"
         ].join("\n\t")
 
-        txt <<  "* All commands take PROJECT as the directory the autumn bot lives in.\n\n"
+        txt <<  "* All commands take PROJECT as the directory the seedling lives in.\n\n"
         txt << start_options.to_s << "\n"
         txt << create_options.to_s << "\n"
         #if is_windows?
@@ -90,13 +86,6 @@ module Seedling
           #txt << %x{#{rackup_path} --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")
         #end
       end # }}}
-
-      def start_options
-        @start_opts ||= OptionParser.new do |o|
-          o.banner = "Start/Restart Options"
-          o.on("-D", "--daemonize", "Daemonize the process") { |daem| @daemonize = true }
-        end
-      end
 
       def al_root
         require "pathname"
@@ -110,22 +99,22 @@ module Seedling
         end
         if dir.nil? or not dir.directory?
           dir = Pathname.new(ENV["PWD"]).expand_path
-          $stderr.puts "Path to autumn tree not given or invalid, using #{dir}"
+          $stderr.puts "Path to seedling tree not given or invalid, using #{dir}"
         end
         Object.const_set("AL_ROOT", dir.expand_path.to_s)
         Dir.chdir(AL_ROOT)
       end
 
       ### Methods for commands {{{
-      def create_options(opts = {})
-        @create_opts ||= OptionParser.new do |o|
+      def plant_options(opts = {})
+        @plant_opts ||= OptionParser.new do |o|
           o.banner = "Create Options"
           o.on("-f", "--force", "Force creation if dir already exists") { |yn| opts[:force] = true }
           o.on("-a", "--amend", "Update a tree") { |yn| opts[:amend] = true }
         end
       end
       
-      def create(command) # {{{
+      def plant(command) # {{{
         create_options(opts = {}).parse!(ARGV)
         unless ARGV.size == 1
           $stderr.puts "Invalid options given: #{ARGV.join(" ")}"
@@ -137,9 +126,8 @@ module Seedling
           puts usage
           exit 1
         end
-        include_autumn
-        require 'autumn/tool/create'
-        Autumn::Tool::Create.create(project_name, opts)
+        include_seedling
+        Seedling::Create.plant(project_name, opts)
       end # }}}
 
       ### End of command methods }}}

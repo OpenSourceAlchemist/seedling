@@ -1,2 +1,10 @@
 ydoc/*
 .yardoc
+.irb*
+.vim*
+RIDE*
+tasks/ride.rake
+tasks/rspec.rake
+script/*
+config/*
+.screenrc*

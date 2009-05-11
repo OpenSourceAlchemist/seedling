@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+begin
+  require "pathname"
+  local_seedling = Pathname.new(__FILE__).expand_path.dirname.join("..", "lib", "seedling.rb")
+  if local_seedling.file?
+    require local_seedling
+  else
+    require "seedling"
+  end
+  require "seedling/bin"
+rescue LoadError
+  require "rubygems"
+  require "seedling/bin"
+end
+Seedling::Bin::Cmd.run(ARGV)
