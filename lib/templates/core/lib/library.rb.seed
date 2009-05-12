@@ -1,5 +1,5 @@
 require "pathname"
 $LOAD_PATH.unshift(Pathname.new(__FILE__).dirname.expand_path.to_s)
-module <% lib_name %>
+module <% @options[:lib_name] %>
 end
-require "<% lib_name_u %>/version"
+require "<% @options[:lib_name_u] %>/version"
