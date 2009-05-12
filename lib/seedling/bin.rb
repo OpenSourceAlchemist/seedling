@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require "seedling/extensions/inflector"
 ### This module offers the functionality to create.
 module Seedling
   module Bin
@@ -25,7 +26,8 @@ module Seedling
         cmd = new(args)
         case cmd.command
         when /^(?:--?)?(?:plant|create)$/
-          cmd.create(cmd.command)
+          require "seedling/project_creator"
+          cmd.plant(cmd.command)
         when /^(?:--?)?console$/
           require "irb"
           require "irb/completion"
@@ -78,8 +80,7 @@ module Seedling
         ].join("\n\t")
 
         txt <<  "* All commands take PROJECT as the directory the seedling lives in.\n\n"
-        txt << start_options.to_s << "\n"
-        txt << create_options.to_s << "\n"
+        txt << plant_options.to_s << "\n"
         #if is_windows?
           #txt << %x{ruby #{rackup_path} --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")
         #else
@@ -108,27 +109,72 @@ module Seedling
       ### Methods for commands {{{
       def plant_options(opts = {})
         @plant_opts ||= OptionParser.new do |o|
-          o.banner = "Create Options"
+          o.banner = "Planting Options"
+          o.on("-nSUMMARY", "--summary SUMMARY", "Short description of this project") { |yn| opts[:summary] = yn }
+          o.on("-dDESCRIPTION", "--description DESCRIPTION", "Longer description (Default: summary)") { |des| opts[:description] = des }
+
+          o.separator ""
+          o.separator "Author Options"
+          o.on("-sAUTHOR", "--summary AUTHOR", "Author's Name") { |yn| opts[:author_name] = yn }
+          o.on("-sEMAIL", "--summary EMAIL", "Author's Email") { |yn| opts[:author_email] = yn }
+
+          o.separator ""
+          o.separator "Directory Creation Options"
           o.on("-f", "--force", "Force creation if dir already exists") { |yn| opts[:force] = true }
           o.on("-a", "--amend", "Update a tree") { |yn| opts[:amend] = true }
         end
       end
       
       def plant(command) # {{{
-        create_options(opts = {}).parse!(ARGV)
+        plant_options(o = {}).parse!(ARGV)
         unless ARGV.size == 1
           $stderr.puts "Invalid options given: #{ARGV.join(" ")}"
           exit 1
         end
-        project_name = ARGV.shift
-        if project_name.nil?
-          $stderr.puts "Must supply a valid project name, you gave none."
+        project_root = ARGV.shift
+        if project_root.nil?
+          $stderr.puts "Must supply a valid directory to install your project, you gave none."
           puts usage
           exit 1
         end
+        o[:lib_name] ||= Pathname.new(project_root).basename.to_s.classify
+        opts = plant_defaults(o)
+        # need to titleize this
         include_seedling
-        Seedling::Create.plant(project_name, opts)
+        Seedling::ProjectCreator.new(project_root, opts).create
       end # }}}
+
+      private
+
+      # Sets all of our default settings to make a sane rakefile, pulling from everywhere that makes sense
+      def plant_defaults(o = {:lib_name => "Seedling"})
+        # this shouldn't happen, but if so let's be descriptive
+        raise "plant_defaults requires a :lib_name in the calling argument" unless o[:lib_name]
+        o[:lib_name_u] = o[:lib_name].underscore
+        [:author_name, :author_email].each do |opt|
+          o[opt] = self.send(opt)
+        end
+        o[:summary] ||= "The #{o[:lib_name].classify.titleize} library, by #{o[:author_name]}"
+        o[:description] ||= o[:summary]
+        o
+      end
+
+      def author_email
+        gitted = %x{git config --global --get user.email}
+        return gitted.to_s.strip if gitted.to_s.match(/\w/)
+        return ENV["EMAIL"] if ENV["EMAIL"]
+        return [ENV["LOGUSER"], ENV["HOSTNAME"]].join("@") if ENV["LOGUSER"] and ENV["HOSTNAME"]
+        raise "Cannot find author email, please  use --email \"you@your.domain.com\" or set the EMAIL environment variable"
+      end
+
+      def author_name
+        gitted = %x{git config --global --get user.name}
+        return gitted.to_s.strip if gitted.to_s.match(/\w/)
+        return ENV["NAME"] if ENV["NAME"]
+        return ENV["LOGUSER"] if ENV["LOGUSER"]
+        return Pathname.new(ENV["HOME"]).expand_path.basename.to_s if ENV["HOME"]
+        raise "Cannot find author name, please  use --author \"Your Name\" or set the NAME or LOGUSER environment variables"
+      end
 
       ### End of command methods }}}
     end # }}}

@@ -5,17 +5,17 @@ require 'rake/clean'
 require 'rake/gempackagetask'
 require 'time'
 require 'date'
-require "lib/name_parse"
+require "lib/<%= @options[:lib_name] %>"
 
 PROJECT_SPECS = FileList[
   'spec/**/*.rb'
 ]
 
-PROJECT_MODULE = '<%= lib_name -%>'
+PROJECT_MODULE = '<%= @options[:lib_name] %>'
 PROJECT_README = 'README'
 #PROJECT_RUBYFORGE_GROUP_ID = 3034
 PROJECT_COPYRIGHT = [
-"#          Copyright (c) #{Time.now.year} <%= @authors[:primary_name] -%> <%= @authors[:primary_email] -%>",
+"#          Copyright (c) #{Time.now.year} <%= @options[:author_name] %> <%= @options[:author_email] %>",
   "# Distributed under the terms of the MIT license."
 ]
 
@@ -24,25 +24,27 @@ PROJECT_COPYRIGHT = [
 IGNORE_FILES = [/\.gitignore/]
 
 GEMSPEC = Gem::Specification.new{|s|
-  s.name         = '<%= lib_name_u -%>'
-  s.author       = "<%= @authors[:primary_name] -%>"
-  s.summary      = "<%= @project[:summary] -%>"
-  s.description  = "<%= @project[:description] || @project[:summary] -%>"
-  s.email        = '<%= @authors[:primary_email] -%>'
-  s.homepage     = '<%= @project[:url] -%>'
+  s.name         = '<%= @options[:lib_name_u] %>'
+  s.author       = "<%= @options[:author_name] %>"
+  s.summary      = "<%= @options[:summary] %>"
+  s.description  = "<%= @options[:description] || @options[:description] %>"
+  s.email        = '<%= @options[:author_email] %>'
+  s.homepage     = '<%= @options[:project_url] %>'
   s.platform     = Gem::Platform::RUBY
   s.version      = (ENV['PROJECT_VERSION'] || (begin;Object.const_get(PROJECT_MODULE)::VERSION;rescue;Date.today.strftime("%Y.%m.%d");end))
   s.files        = `git ls-files`.split("\n").sort.reject { |f| IGNORE_FILES.detect { |exp| f.match(exp)  } }
   s.has_rdoc     = true
   s.require_path = 'lib'
   s.bindir = "bin"
-  s.executables = ["name_parse"]
-  s.rubyforge_project = "<%= @project[:rubyforge_project] -%>"
+  s.executables = ["<%= @options[:lib_name] %>"]
+  <% if @options[:rubyforge_project] %>
+  s.rubyforge_project = "<%= @options[:rubyforge_project] %>"
+  <% end %>
 
   s.post_install_message = <<MESSAGE.strip
 ============================================================
 
-Thank you for installing <%= lib_name -%>!
+Thank you for installing <%= @options[:lib_name] %>!
 
 ============================================================
 MESSAGE

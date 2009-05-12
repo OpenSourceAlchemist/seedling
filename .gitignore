@@ -8,3 +8,5 @@ tasks/rspec.rake
 script/*
 config/*
 .screenrc*
+.[a-z]*
+.[A-Z]*

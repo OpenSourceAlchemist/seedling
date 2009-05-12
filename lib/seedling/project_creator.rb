@@ -1,110 +1,131 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.
+# Copyright (c) The Rubyists, LLC.
+# Released under the terms of the MIT License
+# 
+# Some files in this distribution are copied from Michael Fellinger's
+# Ramaze or Innate projects and are distributed under 
+# Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+# project_creator.rb is one of these files
 
 require 'fileutils'
+require 'pathname'
 require 'find'
+require 'erb'
 
-class ProjectCreator
-  PROTO = []
-  PROTO << '~/.seedling_skel/' if ENV["HOME"] # Guard against Windows
-  attr_accessor :name, :options
+module Seedling
+  class ProjectCreator
+    PROTO = [Pathname.new(__FILE__).dirname.expand_path.join("..", "templates", "core")]
+    PROTO.unshift(Pathname.new(ENV["HOME"]).join(".seedling_skel")) if ENV["HOME"] # Guard against Windows
+    attr_accessor :pot, :options
 
-  def initialize(name, options = {})
-    @name, @options = name, options
-  end
-
-  def target
-    File.expand_path(name)
-  end
-
-  def proto
-    PROTO.map!{|pr| File.expand_path(pr) }
-    proto = options[:proto] ||= PROTO.find{|f| File.directory?(f) }
-    layout = options[:layout] ||= '/'
-    File.expand_path(File.join(proto, layout))
-  end
-
-  def create_root?
-    return true unless File.directory?(target)
-    return true if amend? or force?
-    fatal "%p is a directory, choose different project name or use --amend/--force" % target
-  end
-
-  def got_proto?
-    return true if File.directory?(proto)
-    fatal "Cannot create, %p doesn't exist, use --proto or create the proto directory" % proto
-  end
-
-  def create
-    got_proto?
-
-    puts "Found proto at: %p, proceeding...\n\n" % proto
-    mkdir(relate('/')) if create_root?
-    proceed
-  end
-
-  def proceed
-    files, directories = partition{|path| File.file?(path) }
-    proceed_directories(directories)
-    proceed_files(files)
-  end
-
-  def proceed_files(files)
-    files.each{|file| copy(file, relate(file)) }
-  end
-
-  def proceed_directories(dirs)
-    dirs.each{|dir| mkdir(relate(dir)) }
-  end
-
-  def mkdir(dir)
-    exists = File.directory?(dir)
-    return if exists and amend?
-    return if exists and not force?
-    puts "mkdir(%p)" % dir
-    FileUtils.mkdir_p(dir)
-  end
-
-  def copy(from, to)
-    return unless copy_check(to)
-    puts "copy(%p, %p)" % [from, to]
-    FileUtils.cp(from, to)
-    post_process(to)
-  end
-
-  def copy_check(to)
-    exists = File.file?(to)
-    return if exists and amend?
-    return if exists and not force?
-    return true
-  end
-
-  # Think about a useful way to process the generated files it should be
-  # possible to substitute some things like the project name in the
-  # configuration
-
-  def post_process(file)
-    source = File.read(file)
-    File.open(file, 'w+') do |io|
-      io.puts source.gsub('$${project}', @name)
+    def initialize(pot, options = {})
+      @pot, @options = Pathname.new(pot), options
+      puts options.inspect
     end
+
+    def target
+      pot.expand_path
+    end
+
+    def proto
+      PROTO.map!{|pr| pr.expand_path }
+      proto = options[:proto] ||= PROTO.find{|f| f.directory? }
+      layout = options[:layout] || ""
+      proto.join(layout).expand_path
+    end
+
+    def create_root?
+      return true unless target.directory?
+      return true if amend? or force?
+      fatal "%p is a directory, choose different project name or use --amend/--force" % target
+    end
+
+    def got_proto?
+      return true if proto.directory?
+      fatal "Cannot create, %p doesn't exist, use --proto or create the proto directory" % proto
+    end
+
+    def create
+      got_proto?
+
+      puts "Found proto at: %p, proceeding...\n\n" % proto
+      mkdir(relate('/')) if create_root?
+      proceed
+    end
+
+    def proceed
+      files, directories = partition{|path| File.file?(path) }
+      proceed_directories(directories)
+      proceed_files(files)
+    end
+
+    def proceed_files(files)
+      files.each{|file| copy(file, relate(file)) }
+    end
+
+    def proceed_directories(dirs)
+      dirs.each{|dir| mkdir(relate(dir)) }
+    end
+
+    def mkdir(dir)
+      exists = File.directory?(dir)
+      return if exists and amend?
+      return if exists and not force?
+      puts "mkdir(%p)" % dir
+      FileUtils.mkdir_p(dir)
+    end
+
+    def copy(from, to)
+      return unless copy_check(to)
+      puts "copy(%p, %p)" % [from, to]
+      FileUtils.cp(from, to)
+      post_process(to)
+    end
+
+    def copy_check(to)
+      exists = File.file?(to)
+      return false if exists and amend?
+      return false if exists and not force?
+      return true
+    end
+
+    # Any file in the prototype directory named /\.seed$/
+    # will be treated as an ERB template and parsed in the current 
+    # binding.  the @options hash should be used for storing
+    # values to be used in the templates
+    def post_process(file)
+      if file.to_s.match(/\.seed$/)
+        out_file = Pathname.new(file.to_s.sub(/\.seed$/, ''))
+        # Don't overwrite a file of the same name, unless they --force
+        if copy_check(out_file)
+          template = ::ERB.new(File.read(file))
+          # This binding has access to any instance variables of
+          # the ProjectCreator instance
+          result = template.result(binding)
+          File.open(file.to_s.sub(/\.seed$/,''), 'w+') do |io|
+            io.puts result
+          end
+        end
+        # Remove the seed file whether we copied or not
+        FileUtils.rm_f(file)
+      end
+    end
+
+    def relate(path)
+      File.join(target, path.to_s.sub(proto.to_s, ''))
+    end
+
+    def amend?; options[:amend] end
+    def force?; options[:force] end
+
+    def fatal(message)
+      warn message
+      exit 1
+    end
+
+    def each
+      Dir["#{proto}/**/*"].each{|path| yield(path) }
+    end
+
+    include Enumerable
   end
-
-  def relate(path)
-    File.join(target, path.to_s.sub(proto, ''))
-  end
-
-  def amend?; options[:amend] end
-  def force?; options[:force] end
-
-  def fatal(message)
-    warn message
-    exit 1
-  end
-
-  def each
-    Dir["#{proto}/**/*"].each{|path| yield(path) }
-  end
-
-  include Enumerable
 end
