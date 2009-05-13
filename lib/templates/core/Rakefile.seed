@@ -5,7 +5,7 @@ require 'rake/clean'
 require 'rake/gempackagetask'
 require 'time'
 require 'date'
-require "lib/<%= @options[:lib_name] %>"
+require "lib/<%= @options[:lib_name_u] %>"
 
 PROJECT_SPECS = FileList[
   'spec/**/*.rb'

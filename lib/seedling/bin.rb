@@ -112,11 +112,14 @@ module Seedling
           o.banner = "Planting Options"
           o.on("-nSUMMARY", "--summary SUMMARY", "Short description of this project") { |yn| opts[:summary] = yn }
           o.on("-dDESCRIPTION", "--description DESCRIPTION", "Longer description (Default: summary)") { |des| opts[:description] = des }
+          o.on("-lLIBNAME", "--libname LIBNAME", "Library name (Default: path specifcation)") { |libname| opts[:lib_name] = libname }
+          o.on("-vVER", "--version VER", "Initial version number (Default: 0.0.1)") { |ver| opts[:version] = ver }
 
           o.separator ""
           o.separator "Author Options"
           o.on("-sAUTHOR", "--summary AUTHOR", "Author's Name") { |yn| opts[:author_name] = yn }
           o.on("-sEMAIL", "--summary EMAIL", "Author's Email") { |yn| opts[:author_email] = yn }
+          o.on("-uURL", "--url URL", "Project URL/homepage") { |url| opts[:project_url] = url }
 
           o.separator ""
           o.separator "Directory Creation Options"
@@ -138,6 +141,7 @@ module Seedling
           exit 1
         end
         o[:lib_name] ||= Pathname.new(project_root).basename.to_s.classify
+        o[:lib_name_u] ||= o[:lib_name].underscore
         opts = plant_defaults(o)
         # need to titleize this
         include_seedling
@@ -156,6 +160,7 @@ module Seedling
         end
         o[:summary] ||= "The #{o[:lib_name].classify.titleize} library, by #{o[:author_name]}"
         o[:description] ||= o[:summary]
+        o[:version] ||= "0.0.1"
         o
       end
 
