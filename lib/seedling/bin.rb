@@ -114,6 +114,7 @@ module Seedling
           o.on("-dDESCRIPTION", "--description DESCRIPTION", "Longer description (Default: summary)") { |des| opts[:description] = des }
           o.on("-lLIBNAME", "--libname LIBNAME", "Library name (Default: path specifcation)") { |libname| opts[:lib_name] = libname }
           o.on("-vVER", "--version VER", "Initial version number (Default: 0.0.1)") { |ver| opts[:version] = ver }
+          o.on("-rRUBYFORGE", "--rubyforge RUBYFORGE", "Rubyforge project name") { |rubyforge| opts[:rubyforge_project] = rubyforge }
 
           o.separator ""
           o.separator "Author Options"
