@@ -4,11 +4,11 @@ task :setup => :gem_installer do
     # core
 
     # spec
-    gem '<%= @options[:test_suite] -%>'
+    gem '<%= @options[:test_suite] %>'
     gem 'rcov'
 
     # doc
-    gem '<%= @options[:doc_generator] -%>'
+    gem '<%= @options[:doc_generator] %>'
 
     setup
   end
