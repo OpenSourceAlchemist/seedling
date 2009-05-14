@@ -1,3 +1,6 @@
+AUTHORS
+CHANGELOG
+MANIFEST
 README
 Rakefile
 bin/seedling
@@ -22,6 +25,7 @@ lib/templates/core/tasks/rcov.rake
 lib/templates/core/tasks/release.rake
 lib/templates/core/tasks/reversion.rake
 lib/templates/core/tasks/setup.rake.seed
+seedling.gemspec
 spec/helper.rb
 tasks/authors.rake
 tasks/bacon.rake

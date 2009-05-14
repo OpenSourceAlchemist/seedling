@@ -42,7 +42,7 @@ GEMSPEC = Gem::Specification.new{|s|
   s.post_install_message = <<MESSAGE.strip
 ============================================================
 
-Thank you for installing Name Parse!
+Thank you for installing Seedling!
 Begin by planting your ruby project with 
 # seedling plant /path/to/new/project
 

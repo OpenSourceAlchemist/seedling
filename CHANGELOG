@@ -1,3 +1,7 @@
+[27deb65 | Thu May 14 15:30:14 UTC 2009] Kevin Berry <kevin@opensourcealchemist.com>
+
+  * Version 0.0.1
+
 [4017044 | Thu May 14 14:50:26 UTC 2009] Kevin Berry <kevinberry@nrs.us>
 
   * Remove old library dir, and correct erb output for library.rb.seed
