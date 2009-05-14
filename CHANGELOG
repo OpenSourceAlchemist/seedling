@@ -1,0 +1,68 @@
+[4017044 | Thu May 14 14:50:26 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Remove old library dir, and correct erb output for library.rb.seed
+
+[04d16e0 | Thu May 14 14:45:02 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Get the library module and children in the right place.  TODO: Remove library directory from plant.
+
+[25e0453 | Thu May 14 14:09:29 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Fix erb calls (Railsism doesn't work!)
+
+[f8eeba5 | Wed May 13 18:55:39 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Add params for doc_generator, test_suite, correct email parameter.
+
+[ead7fbf | Wed May 13 18:22:26 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Add rubyforge_project commandline option.
+
+[fb7663b | Wed May 13 17:34:18 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Fix a couple of templates, and add more planting options.
+
+[eb1d0d0 | Wed May 13 15:40:01 UTC 2009] Kevin Berry <kevinberry@nrs.us>
+
+  * Convert setup into a seed (erb) so that bacon/rspec and rdoc/yard choices can be made.
+
+[771f9d3 | Tue May 12 23:12:42 UTC 2009] Kevin Berry <KevinBerry@nrs.us>
+
+  * rest of erb to seed conversion.
+
+[72aa1b4 | Tue May 12 23:06:40 UTC 2009] Kevin Berry <KevinBerry@nrs.us>
+
+  * Adjust library.rb.erb to library.rb.seed, and adjust template data to match new standards.
+
+[2f71f19 | Tue May 12 22:50:37 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * changed extension for templates to be parsed with erb to .seed to remove conflicts with actual .erb files.  added most options to Rakefile.seed.  TODO: finish out Rakefile.seed and move on to more .seed files where dynamic values are needed
+
+[aff3223 | Mon May 11 19:41:52 UTC 2009] TJ Vanderpoel <bougyman@zero.(none)>
+
+  * added bin/seedling and began forming bin.rb to seedling usage
+
+[6765184 | Sun May 10 22:32:16 UTC 2009] Kevin Berry <Kevin Berry>
+
+  * Modify Rakefile.erb to get some project info, need to get ProjectCreator to feed the right info.
+
+[5917d53 | Sun May 10 03:42:26 UTC 2009] Kevin Berry <Kevin Berry>
+
+  * Make plant work.
+
+[f02eaf1 | Sun May 10 03:06:22 UTC 2009] Kevin Berry <Kevin Berry>
+
+  * Bring in initial generator and ProjectCreator kit (stripped down bougyman's autumn library.)
+
+[22fb2a5 | Fri May 08 03:19:21 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * changed env variable for versioning to VERSION
+
+[6329710 | Fri May 08 03:07:50 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added yard task and a README, plus a .gitignore
+
+[41fd3c5 | Thu May 07 19:21:22 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * new tree to begin seedling work
+
