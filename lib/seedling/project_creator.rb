@@ -107,6 +107,7 @@ module Seedling
         oldfile = file
         file = File.join(new_dir, File.basename(file))
         FileUtils.mv(oldfile, file)
+        FileUtils.rmdir(origdir)
       end
       if file.to_s.match(/\.seed$/)
         out_file = Pathname.new(file.to_s.sub(/\.seed$/, ''))
