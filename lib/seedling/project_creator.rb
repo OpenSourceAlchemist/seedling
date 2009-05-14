@@ -93,6 +93,21 @@ module Seedling
     # binding.  the @options hash should be used for storing
     # values to be used in the templates
     def post_process(file)
+      if File.basename(file.to_s).match(/library/)
+        oldfile = file
+        file = file.to_s.sub("library", @options[:lib_name_u])
+        FileUtils.mv(oldfile, file)
+      end
+      if File.dirname(file.to_s).split("/").last == "library"
+        origdir = File.dirname(file.to_s)
+        dirarr = origdir.split("/")
+        dirarr[dirarr.size-1] = @options[:lib_name_u]
+        new_dir = File.join(dirarr)
+        mkdir(new_dir)
+        oldfile = file
+        file = File.join(new_dir, File.basename(file))
+        FileUtils.mv(oldfile, file)
+      end
       if file.to_s.match(/\.seed$/)
         out_file = Pathname.new(file.to_s.sub(/\.seed$/, ''))
         # Don't overwrite a file of the same name, unless they --force
