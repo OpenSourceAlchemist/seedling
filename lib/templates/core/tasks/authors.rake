@@ -9,13 +9,13 @@ task :authors do
   `git shortlog -nse`.scan(/(\d+)\s(.+)\s<(.*)>$/) do |count, name, email|
     # Examples of mappping, replace with your own or comment this out/delete it
     case name
-    when "bougyman"
+    when /^(?:bougyman$|TJ Vanderpoel)/
       name, email = "TJ Vanderpoel", "tj@rubyists.com"
-    when "manveru"
+    when /^(?:manveru$|Michael Fellinger)/
       name, email = "Michael Fellinger", "mf@rubyists.com"
-    when "deathsyn"
+    when /^(?:deathsyn$|Kevin Berry)/
       name, email = "Kevin Berry", "kb@rubyists.com"
-    when /^(?:jayson|thedonvaughn|jvaughn)$/
+    when /^(?:(?:jayson|thedonvaughn|jvaughn)$|Jayson Vaughn)/
       name, email = "Jayson Vaughn", "jv@rubyists.com"
     end
 
