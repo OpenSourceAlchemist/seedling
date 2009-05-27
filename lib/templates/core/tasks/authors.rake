@@ -7,13 +7,16 @@ task :authors do
   authors = Hash.new(0)
 
   `git shortlog -nse`.scan(/(\d+)\s(.+)\s<(.*)>$/) do |count, name, email|
+    # Examples of mappping, replace with your own or comment this out/delete it
     case name
     when "bougyman"
-      name, email = "TJ Vanderpoel", "bougy.man@gmail.com"
-    when /riscfuture/i
-      name, email = "Tim Morgan", "riscfuture@gmail.com"
-    when "Michael Fellinger m.fellinger@gmail.com"
-      name, email = "Michael Fellinger", "m.fellinger@gmail.com"
+      name, email = "TJ Vanderpoel", "tj@rubyists.com"
+    when "manveru"
+      name, email = "Michael Fellinger", "mf@rubyists.com"
+    when "deathsyn"
+      name, email = "Kevin Berry", "kb@rubyists.com"
+    when /^(?:jayson|thedonvaughn|jvaughn)$/
+      name, email = "Jayson Vaughn", "jv@rubyists.com"
     end
 
     authors[[name, email]] += count.to_i
