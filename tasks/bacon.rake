@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2009 The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>
+# Distributed under the terms of the MIT license.
+# See the LICENSE file that accompanied this software for the full MIT License text
+#
 desc 'Run all bacon specs with pretty output'
 task :bacon => :install_dependencies do
   require 'open3'

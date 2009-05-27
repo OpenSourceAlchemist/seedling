@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2009 The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>
+# Distributed under the terms of the MIT license.
+# See the LICENSE file that accompanied this software for the full MIT License text
+#
 begin; require 'rubygems'; rescue LoadError; end
 
 require 'rake'
@@ -18,6 +22,7 @@ PROJECT_COPYRIGHT_SUMMARY = [
  "# Copyright (c) 2008-#{Time.now.year} The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>",
  "# Distributed under the terms of the MIT license.",
  "# See the LICENSE file that accompanied this software for the full MIT License text",
+ "#"
 ]
 PROJECT_COPYRIGHT = PROJECT_COPYRIGHT_SUMMARY + [
  "# Permission is hereby granted, free of charge, to any person obtaining a copy",

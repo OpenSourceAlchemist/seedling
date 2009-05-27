@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2009 The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>
+# Distributed under the terms of the MIT license.
+# See the LICENSE file that accompanied this software for the full MIT License text
+#
 require "pathname"
 task :legal do
   license = Pathname("LICENSE")
@@ -27,9 +31,8 @@ task :copyright => [:legal] do
     next if ignore.include? file.expand_path
     lines = file.readlines.map{ |l| l.chomp }
     unless lines.first(PROJECT_COPYRIGHT_SUMMARY.size) == PROJECT_COPYRIGHT_SUMMARY
-      puts "#{file} seems to need attention, first 4 lines:"
-      puts lines[0..3]
-      puts
+      oldlines = file.readlines
+      file.open("w+") { |f| f.puts PROJECT_COPYRIGHT_SUMMARY + oldlines }
     end
   end
 end

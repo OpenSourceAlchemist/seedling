@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2009 The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>
+# Distributed under the terms of the MIT license.
+# See the LICENSE file that accompanied this software for the full MIT License text
+#
 task :gem_installer do
   class GemInstaller
     def initialize(options = {}, &block)

@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2009 The Rubyists, LLC (effortless systems) <rubyists@rubyists.com>
+# Distributed under the terms of the MIT license.
+# See the LICENSE file that accompanied this software for the full MIT License text
+#
 # Add inflection methods to String, which allows the easy transformation of
 # words from singular to plural,class names to table names, modularized class
 # names to ones without, and class names to foreign keys.
