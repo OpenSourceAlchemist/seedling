@@ -45,13 +45,9 @@ module Seedling
           puts Seedling::VERSION
           exit
         when /^$/
-          puts "Must supply a valid command"
-          puts cmd.usage
-          exit 1
+          raise "Must supply a valid command\n\n" + cmd.usage
         else
-          puts "#{command} not implemented"
-          puts cmd.usage
-          exit 1
+          raise "invalid arguments #{args.join(" ")}\n\n" + cmd.usage
         end
       end # }}}
 
@@ -114,7 +110,7 @@ module Seedling
       def plant_options(opts = {})
         @plant_opts ||= OptionParser.new do |o|
           o.banner = "Planting Options"
-          o.on("-nSUMMARY", "--summary SUMMARY", "Short description of this project") { |yn| opts[:summary] = yn }
+          o.on("-sSUMMARY", "--summary SUMMARY", "Short description of this project") { |yn| opts[:summary] = yn }
           o.on("-dDESCRIPTION", "--description DESCRIPTION", "Longer description (Default: summary)") { |des| opts[:description] = des }
           o.on("-lLIBNAME", "--libname LIBNAME", "Library name (Default: path specifcation)") { |libname| opts[:lib_name] = libname }
           o.on("-gDOCGENERATOR", "--doc-generator DOCGENERATOR", "Preferred documentation generator (Default: yard)") { |docgenerator| opts[:doc_generator] = docgenerator }
@@ -124,28 +120,26 @@ module Seedling
 
           o.separator ""
           o.separator "Author Options"
-          o.on("-sAUTHOR", "--summary AUTHOR", "Author's Name") { |yn| opts[:author_name] = yn }
+          o.on("-aAUTHOR", "--author AUTHOR", "Author's Name") { |yn| opts[:author_name] = yn }
           o.on("-eEMAIL", "--email EMAIL", "Author's Email") { |yn| opts[:author_email] = yn }
           o.on("-uURL", "--url URL", "Project URL/homepage") { |url| opts[:project_url] = url }
 
           o.separator ""
           o.separator "Directory Creation Options"
           o.on("-f", "--force", "Force creation if dir already exists") { |yn| opts[:force] = true }
-          o.on("-a", "--amend", "Update a tree") { |yn| opts[:amend] = true }
+          o.on("-A", "--amend", "Update a tree") { |yn| opts[:amend] = true }
+          o.on("-q", "--quiet", "Don't show output of tree creation") { |yn| opts[:interactive] = false }
         end
       end
       
       def plant(command) # {{{
         plant_options(o = {}).parse!(ARGV)
-        unless ARGV.size == 1
-          $stderr.puts "Invalid options given: #{ARGV.join(" ")}"
-          exit 1
+        if ARGV.size > 1
+          raise "Invalid options given: #{ARGV.join(" ")}\n\n" + usage
         end
         project_root = ARGV.shift
         if project_root.nil?
-          $stderr.puts "Must supply a valid directory to install your project, you gave none."
-          puts usage
-          exit 1
+          raise "Must supply a valid directory to install your project, you gave none.\n\n" + usage
         end
         o[:lib_name] ||= Pathname.new(project_root).basename.to_s.classify
         o[:lib_name_u] ||= o[:lib_name].underscore

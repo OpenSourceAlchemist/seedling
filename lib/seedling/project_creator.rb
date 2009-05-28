@@ -23,7 +23,7 @@ module Seedling
 
     def initialize(pot, options = {})
       @pot, @options = Pathname.new(pot), options
-      puts options.inspect
+      @interactive = @options.keys.include?(:interactive) ? @options[:interactive] : true
     end
 
     def target
@@ -51,7 +51,7 @@ module Seedling
     def create
       got_proto?
 
-      puts "Found proto at: %p, proceeding...\n\n" % proto
+      puts("Found proto at: %p, proceeding...\n\n" % proto) if @interactive
       mkdir(relate('/')) if create_root?
       proceed
     end
@@ -74,13 +74,13 @@ module Seedling
       exists = File.directory?(dir)
       return if exists and amend?
       return if exists and not force?
-      puts "mkdir(%p)" % dir
+      puts("mkdir(%p)" % dir) if @interactive
       FileUtils.mkdir_p(dir)
     end
 
     def copy(from, to)
       return unless copy_check(to)
-      puts "copy(%p, %p)" % [from, to]
+      puts("copy(%p, %p)" % [from, to]) if @interactive
       FileUtils.cp(from, to)
       post_process(to)
     end

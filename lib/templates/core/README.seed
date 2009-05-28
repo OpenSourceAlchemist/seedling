@@ -1,0 +1,15 @@
+==<%= @options[:author_name] %>
+----------
+
+  <%= @options[:summary] %>
+
+== Download
+
+  <%= @options[:homepage] %>
+
+==Usage
+-------
+
+We're getting there. 
+
+Copyright(c) <%= Date.today.year %> by <%= @options[:author_name] %>

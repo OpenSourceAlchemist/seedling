@@ -24,7 +24,7 @@ end
 Bacon.summary_on_exit
 
 describe "Spec Helper" do
-  it "Should bring our library namespace in" do
+  it "Should bring our library namespace in (remove this test once you have your own)" do
     Seedling.should == Seedling
   end
 end
