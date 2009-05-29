@@ -1,3 +1,65 @@
+[fbb1b1a | Fri May 29 19:04:59 UTC 2009] Kevin Berry <kevin@opensourcealchemist.com>
+
+  * Flesh out Usage a bit.
+
+[e02564f | Fri May 29 00:47:07 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * doh, removed the wrong parens
+
+[da56f0c | Thu May 28 22:02:26 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Added specs, for bin and seedling main module
+
+    * Added ROOT and LIBDIR as constants to main module
+    * Included the Pathname / extended method in main module
+    * Moved to autoload :VERSION for loading the library version
+    * Added a quiet (-q/--quite) mode for ProjectCreator (the seedling #plant handler)
+    * Added a README to the templates/core so the yard task works out of the box
+
+[1a08ea1 | Wed May 27 14:35:59 UTC 2009] Kevin Berry <kevin@opensourcealchemist.com>
+
+  * Move DbHelper spec for PG to the correct tree.
+
+[9823957 | Wed May 27 06:32:53 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added db_helper and made all of the new additions seeds.  TODO: make them dynamic
+
+[c853021 | Wed May 27 06:29:15 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added a couple sequel specific tasks
+
+[0629cc5 | Wed May 27 01:53:03 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added license to all of seedling files using the copyright task
+
+[36ae042 | Wed May 27 01:46:15 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * prettied up the license
+
+[fa6bb1b | Wed May 27 01:11:46 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * updated AUTHORS file
+
+[3c08a96 | Wed May 27 01:11:04 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * updated authors for more consistent reporting
+
+[a984ef8 | Wed May 27 01:05:35 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added yard task to template task director, and updated authors.rake
+
+[81f6a82 | Mon May 25 21:29:48 UTC 2009] Kevin Berry <KevinBerry@nrs.us>
+
+  * Close quote on yard,rake
+
+[1808642 | Tue May 19 03:37:25 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added rake tasks to documentation
+
+[db34e4f | Thu May 14 17:30:32 UTC 2009] Kevin Berry <kevin@opensourcealchemist.com>
+
+  * Correct Rakefile for project name, update manifest, authors.
+
 [27deb65 | Thu May 14 15:30:14 UTC 2009] Kevin Berry <kevin@opensourcealchemist.com>
 
   * Version 0.0.1
