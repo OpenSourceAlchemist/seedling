@@ -22,7 +22,12 @@ using git
 ==Usage
 -------
 
-We're getting there. Will be
+To start, one can run:
+ seedling --help
+
+to see available options.
+
+For the impatient, try this:
  seedling plant /path/to/tree
 
 Copyright(c) 2009 The Rubyists
