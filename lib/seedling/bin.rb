@@ -157,7 +157,7 @@ module Seedling
         raise "plant_defaults requires a :lib_name in the calling argument" unless o[:lib_name]
         o[:lib_name_u] = o[:lib_name].underscore
         [:author_name, :author_email].each do |opt|
-          o[opt] = self.send(opt)
+          o[opt] ||= self.send(opt)
         end
         o[:summary] ||= "The #{o[:lib_name].classify.titleize} library, by #{o[:author_name]}"
         o[:description] ||= o[:summary]
