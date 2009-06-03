@@ -8,7 +8,7 @@ require 'date'
 require "lib/<%= @options[:lib_name_u] %>"
 
 PROJECT_SPECS = FileList[
-  'spec/**/*.rb'
+  'spec/*/**/*.rb'
 ]
 
 PROJECT_MODULE = '<%= @options[:lib_name] %>'
