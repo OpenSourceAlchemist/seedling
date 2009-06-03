@@ -62,7 +62,7 @@ describe "Seedling Planted Tree" do
   it "Should set email properly" do
     Seedling::Bin::Cmd.run(["plant", "the_tree", "-q", "--email", "foo@bar.com"])
     rakelines = (@tmpdir/:the_tree/"Rakefile").readlines
-    rakelines.detect { |l| l.match(/\s+s.email\s+=\s+'(.*)'/) }.should.match /foo@bar.com/
+    rakelines.detect { |l| l.match(/\s+s.email\s+=\s+"(.*)"/) }.should.not.be.nil
     $~[1].should.equal "foo@bar.com"
   end
 end
