@@ -40,30 +40,37 @@ PROJECT_COPYRIGHT = PROJECT_COPYRIGHT_SUMMARY + [
  "# THE SOFTWARE."
 ]
 
+PROJECT_VERSION =
+  if version = ENV['PROJECT_VERSION'] || ENV['VERSION']
+    version
+  else
+    <%= @options[:lib_name] %>::VERSION rescue Date.today.strftime("%Y.%m.%d")
+  end
 
 # To release the monthly version do:
 # $ PROJECT_VERSION=2009.03 rake release
-IGNORE_FILES = [/\.gitignore/]
+
+PROJECT_FILES = FileList[`git ls-files`.split("\n")].exclude('.gitignore')
 
 GEMSPEC = Gem::Specification.new{|s|
-  s.name         = '<%= @options[:lib_name_u] %>'
-  s.author       = "<%= @options[:author_name] %>"
-  s.summary      = "<%= @options[:summary] %>"
-  s.description  = "<%= @options[:description] || @options[:description] %>"
-  s.email        = '<%= @options[:author_email] %>'
-  s.homepage     = '<%= @options[:project_url] %>'
+  s.name         = <%= @options[:lib_name_u].to_s.dump %>
+  s.author       = <%= @options[:author_name].to_s.dump %>
+  s.summary      = <%= @options[:summary].to_s.dump %>
+  s.description  = <%= (@options[:description] || @options[:summary]).to_s.dump %>
+  s.email        = <%= @options[:author_email].to_s.dump %>
+  s.homepage     = <%= @options[:project_url].to_s.dump %>
   s.platform     = Gem::Platform::RUBY
-  s.version      = (ENV['PROJECT_VERSION'] || (begin;Object.const_get(PROJECT_MODULE)::VERSION;rescue;Date.today.strftime("%Y.%m.%d");end))
-  s.files        = `git ls-files`.split("\n").sort.reject { |f| IGNORE_FILES.detect { |exp| f.match(exp)  } }
+  s.version      = PROJECT_VERSION
+  s.files        = PROJECT_FILES
   s.has_rdoc     = true
-  s.require_path = 'lib'
-  s.bindir = "bin"
-  s.executables = ["<%= @options[:lib_name] %>"]
+  s.require_path = "lib"
+  s.bindir       = "bin"
+  s.executables  = [<%= @options[:lib_name].to_s.dump %>]
   <% if @options[:rubyforge_project] %>
-  s.rubyforge_project = "<%= @options[:rubyforge_project] %>"
+  s.rubyforge_project = <%= @options[:rubyforge_project].to_s.dump %>
   <% end %>
 
-  s.post_install_message = <<MESSAGE.strip
+  s.post_install_message = <<MESSAGE
 ============================================================
 
 Thank you for installing <%= @options[:lib_name] %>!
@@ -72,7 +79,7 @@ Thank you for installing <%= @options[:lib_name] %>!
 MESSAGE
 }
 
-Dir['tasks/*.rake'].each{|f| import(f) }
+Dir.glob('tasks/*.rake'){|f| import(f) }
 
 task :default => [:bacon]
 
