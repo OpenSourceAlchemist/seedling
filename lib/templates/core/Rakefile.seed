@@ -65,7 +65,7 @@ GEMSPEC = Gem::Specification.new{|s|
   s.has_rdoc     = true
   s.require_path = "lib"
   s.bindir       = "bin"
-  s.executables  = [<%= @options[:lib_name].to_s.dump %>]
+  s.executables  = [<%= @options[:lib_name_u].to_s.dump %>]
   <% if @options[:rubyforge_project] %>
   s.rubyforge_project = <%= @options[:rubyforge_project].to_s.dump %>
   <% end %>
