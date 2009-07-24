@@ -10,7 +10,10 @@ end
 
 # <%= @options[:summary] %>
 module <%= @options[:lib_name] %>
+  ROOT = Pathname($LOAD_PATH.first).join("..").expand_path
+  LIBROOT = ROOT/:lib
+  MIGRATION_ROOT = ROOT/:migrations
+  MODEL_ROOT = ROOT/:model
+  SPEC_HELPER_PATH = ROOT/:spec
   autoload :VERSION, "<%= @options[:lib_name_u] %>/version"
-  ROOT = Pathname($LOAD_PATH.first) unless <%= @options[:lib_name] %>.const_defined?("ROOT")
-  LIBDIR = ROOT/:lib unless <%= @options[:lib_name] %>.const_defined?("LIBDIR")
 end
