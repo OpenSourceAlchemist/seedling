@@ -32,6 +32,9 @@ module Seedling
         when /^(?:--?)?(?:plant|create)$/
           require "seedling/project_creator"
           cmd.plant(cmd.command)
+        when /^(?:--?)?graft$/
+          require "seedling/grafter"
+          cmd.graft(cmd.command)
         when /^(?:--?)?console$/
           require "irb"
           require "irb/completion"
@@ -75,6 +78,7 @@ module Seedling
           "           the current directory.  seedling create foo would make ./foo containing a",
           "           seedling prototype.\n",
           " create  - Synonymous with plant.\n",
+          " graft   - Graft a module onto the existing plant.\n",
           " console - Starts an irb console with seedling (and irb completion) loaded.",
           "           ARGV is passed on to IRB.\n\n"
         ].join("\n\t")
@@ -149,6 +153,8 @@ module Seedling
         Seedling::ProjectCreator.new(project_root, opts).create
       end # }}}
 
+      def graft(command) # {{{
+      end # }}}
       private
 
       # Sets all of our default settings to make a sane rakefile, pulling from everywhere that makes sense
