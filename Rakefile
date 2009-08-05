@@ -9,7 +9,7 @@ require 'rake/clean'
 require 'rake/gempackagetask'
 require 'time'
 require 'date'
-require "lib/seedling"
+require "./lib/seedling"
 
 PROJECT_SPECS = FileList[
   'spec/**/*.rb'

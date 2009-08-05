@@ -17,6 +17,8 @@ task :authors do
       name, email = "Kevin Berry", "kb@rubyists.com"
     when /^(?:(?:jayson|thedonvaughn|jvaughn)$|Jayson Vaughn)/
       name, email = "Jayson Vaughn", "jv@rubyists.com"
+    when /^(?:rubyists@rubyists.com)/
+      name, email = "The Rubyists, LLC", "rubyists@rubyists.com"
     end
 
     authors[[name, email]] += count.to_i
