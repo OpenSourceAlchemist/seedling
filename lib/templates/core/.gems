@@ -1,0 +1,5 @@
+# Place list of gems here with versions
+# We need innate for traiting/options, 
+# and bacon for specs
+innate -v 2012.03
+bacon -v 1.1.0

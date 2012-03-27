@@ -1,5 +1,5 @@
 require "pathname"
-$LOAD_PATH.unshift(File.expand_path("../", __FILE__))
+require "logger"
 
 # Allows for pathnames to be easily added to
 class Pathname
@@ -9,11 +9,49 @@ class Pathname
 end
 
 # <%= @options[:summary] %>
+# This sets all the globals and creates our main namespace
 module <%= @options[:lib_name] %>
-  ROOT = Pathname($LOAD_PATH.first).join("..").expand_path
-  LIBROOT = ROOT/:lib
+  LIBROOT = Pathname(__FILE__).dirname.expand_path
+  ROOT = LIBROOT/".."
   MIGRATION_ROOT = ROOT/:migrations
   MODEL_ROOT = ROOT/:model
   SPEC_HELPER_PATH = ROOT/:spec
-  autoload :VERSION, "<%= @options[:lib_name_u] %>/version"
+  autoload :VERSION, (LIBROOT/"<%= @options[:lib_name_u] %>/version").to_s
+  # Helper method to load models
+  # @model String The model you wish to load
+  def self.M(model)
+    require <%= @options[:lib_name] %>::MODELS.join(model).to_s
+  end
+
+  # Helper method to load files from ROOT
+  # @file String The file you wish to load
+  def self.R(file)
+    require <%= @options[:lib_name] %>::ROOT.join(file).to_s
+  end
+
+  # Helper method to load files from lib/yrb
+  # @file String The file you wish to load
+  def self.L(file)
+    require (<%= @options[:lib_name] %>::LIBROOT/:<%= @options[:lib_name_u] %>).join(file).to_s
+  end
+
+  def self.Run(*args)
+    require "open3"
+    Open3.popen3(*args) do |sin, sout, serr|
+      o = Thread.new do
+        sout.each_line { |l| puts l.chomp }
+      end
+      e = Thread.new do
+        serr.each_line { |l| $stderr.puts l.chomp }
+      end
+      sin.close
+      o.join
+      e.join
+    end
+  end
+
 end
+<%= @options[:lib_name] %>::R "options"
+<%= @options[:lib_name] %>::Log = Logger.new(<%= @options[:lib_name] %>.options.logfile, 10, 10240000) unless <%= @options[:lib_name] %>.const_defined?("Log")
+<%= @options[:lib_name] %>::Log.level = <%= @options[:lib_name] %>.options.log_level
+

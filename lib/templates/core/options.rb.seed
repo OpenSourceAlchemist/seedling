@@ -1,0 +1,15 @@
+require "innate"
+
+module <%= @options[:lib_name] %>
+  include Innate::Optioned
+
+  options.dsl do
+    o "Database", :db, ENV["<%=options[:lib_name] %>_DB"] || "postgres://postgres@localhost/<%= @options[:lib_name_u] %>"
+
+    o "Logfile", :logfile, ENV["<%=options[:lib_name] %>_LOG"] || $stdout
+
+    o "Log Level", :log_level, ENV["<%=options[:lib_name] %>_LogLevel"] || Logger::INFO
+  end
+
+end
+

@@ -2,7 +2,7 @@ begin; require 'rubygems'; rescue LoadError; end
 
 require 'rake'
 require 'rake/clean'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'time'
 require 'date'
 require "lib/<%= @options[:lib_name_u] %>"
@@ -40,7 +40,7 @@ PROJECT_COPYRIGHT = PROJECT_COPYRIGHT_SUMMARY + [
  "# THE SOFTWARE."
 ]
 
-PROJECT_VERSION =
+<%= @options[:lib_name] %>_VERSION =
   if version = ENV['PROJECT_VERSION'] || ENV['VERSION']
     version
   else
@@ -48,9 +48,10 @@ PROJECT_VERSION =
   end
 
 # To release the monthly version do:
-# $ PROJECT_VERSION=2009.03 rake release
+# $ <%= @options[:lib_name] %>_VERSION=2009.03 rake release
+IGNORE_FILES = [/\.git(?:ignore)?/]
 
-PROJECT_FILES = FileList[`git ls-files`.split("\n")].exclude('.gitignore')
+PROJECT_FILES = `find . -type f`.split("\n").sort.reject { |f| IGNORE_FILES.detect { |exp| f.match(exp)  } }
 
 GEMSPEC = Gem::Specification.new{|s|
   s.name         = <%= @options[:lib_name_u].to_s.dump %>
@@ -60,7 +61,7 @@ GEMSPEC = Gem::Specification.new{|s|
   s.email        = <%= @options[:author_email].to_s.dump %>
   s.homepage     = <%= @options[:project_url].to_s.dump %>
   s.platform     = Gem::Platform::RUBY
-  s.version      = PROJECT_VERSION
+  s.version      = <%= @options[:lib_name] %>_VERSION
   s.files        = PROJECT_FILES
   s.has_rdoc     = true
   s.require_path = "lib"
