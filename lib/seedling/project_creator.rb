@@ -143,7 +143,7 @@ module Seedling
     end
 
     def each
-      Dir["#{proto}/**/*"].each{|path| yield(path) }
+      Dir["#{proto}/**/{*,.*}"].each{|path| yield(path) }
     end
 
     include Enumerable
