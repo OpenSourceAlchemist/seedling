@@ -20,7 +20,7 @@ module <%= @options[:lib_name] %>
   # Helper method to load models
   # @model String The model you wish to load
   def self.M(model)
-    require <%= @options[:lib_name] %>::MODELS.join(model).to_s
+    require <%= @options[:lib_name] %>::MODEL_ROOT.join(model).to_s
   end
 
   # Helper method to load files from ROOT
