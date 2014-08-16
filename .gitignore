@@ -1,4 +1,5 @@
 ydoc/*
+pkg/*
 .yardoc
 .irb*
 .vim*
