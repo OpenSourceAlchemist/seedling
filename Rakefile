@@ -6,7 +6,7 @@ begin; require 'rubygems'; rescue LoadError; end
 
 require 'rake'
 require 'rake/clean'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'time'
 require 'date'
 require "./lib/seedling"

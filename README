@@ -17,7 +17,7 @@ It automates some of the monotony such as
 == Download
 
 using git
- git clone git://rubyists.com/gits/seedling
+ git clone https://github.com/deathsyn/seedling.git
 
 ==Usage
 -------
